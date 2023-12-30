@@ -1,0 +1,27 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+name = "remix-chat"
+client_id = "e7e1b974771b50973ec9eef6aac7f296"
+application_url = "https://nuclear-young-sara-remedy.trycloudflare.com"
+embedded = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "write_products,read_products,read_inventory,write_discounts,write_customers"
+
+[auth]
+redirect_urls = [
+  "https://nuclear-young-sara-remedy.trycloudflare.com/auth/callback",
+  "https://nuclear-young-sara-remedy.trycloudflare.com/auth/shopify/callback",
+  "https://nuclear-young-sara-remedy.trycloudflare.com/api/auth/callback"
+]
+
+[webhooks]
+api_version = "2023-10"
+
+[pos]
+embedded = false
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "oroa-development.myshopify.com"

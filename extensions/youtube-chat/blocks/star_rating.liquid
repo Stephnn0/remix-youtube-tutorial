@@ -1,0 +1,179 @@
+{% assign avg_rating = block.settings.product.metafields.demo.avg_rating.value | round %}
+
+<style>
+  .main {
+    background-color: white;
+  }
+
+  .chat-widget-style {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background-color: #1e771a;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .chat-widget-style:hover {
+    background-color: #0e335b;
+
+  }
+
+
+  .chat-window-style {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    height: 400px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* remove in case */
+  }
+
+
+
+  .chat-content-style {
+    height: 80%;
+    overflow-y: auto;
+    padding: 20px;
+  }
+
+  .input-container-style {
+    padding: 10px;
+    display: flex;
+    border-top: 1px solid #ccc;
+  }
+
+  .message-input-style {
+    flex-grow: 1;
+    padding: 8px;
+    margin-right: 10px;
+  }
+
+  .send-button-style {
+    padding: 8px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+</style>
+
+<div class="main">
+  <div
+    id="chat-widget"
+    class="chat-widget-style"
+    onclick="toggleChat()">
+    <span>Chat</span>
+  </div>
+  <div id="chat-window" class="chat-window-style">
+
+    <div id="chat-content" class="chat-content-style"></div>
+    <div id="input-container" class="input-container-style">
+      <input
+        type="text"
+        id="message-input"
+        placeholder="Type your message"
+        class="message-input-style">
+      <button
+        id="send-button"
+        class="send-button-style"
+        onclick="sendMessage()">Send</button>
+    </div>
+
+
+  </div>
+
+</div>
+
+<script>
+
+  function toggleChat() {
+    const chatWindow = document.getElementById('chat-window');
+    chatWindow.style.display = chatWindow.style.display == 'none'
+      ? 'block'
+      : 'none'
+  }
+
+  function sendMessage() {
+    console.log('hit')
+    const inputElement = document.getElementById('message-input');
+    const message = inputElement.value;
+    console.log(message, 'message')
+
+    const xhr = new XMLHttpRequest()
+
+    xhr.open('POST', 'https://poppilan.com/api/sendMessage', true)
+
+    xhr.setRequestHeader('Content-Type', 'application/json');
+
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        console.log('message sent succesfuly')
+      } else {
+        console.error('some error occurred')
+      }
+    }
+
+    xhr.onerror = function() {
+      console.log('again another error')
+    }
+
+    xhr.send(JSON.stringify({message}));
+    console.log(message, 'message')
+
+
+    if (message.trim() !== '') {
+      const chatContent = document.getElementById('chat-content');
+      const messageElement = document.createElement('div');
+      messageElement.textContent = message;
+      chatContent.appendChild(messageElement);
+      inputElement.value = '';
+    }
+  }
+
+
+
+  document.addEventListener('click', function(event) {
+    const chatWindow = document.getElementById('chat-window');
+    const chatWidget = document.getElementById('chat-widget');
+
+    if (! chatWindow.contains(event.target) && ! chatWidget.contains(event.target)) { // Clicked outside of both chat window and chat widget
+      chatWindow.style.display = 'none';
+    }
+  });
+</script>
+
+
+
+{% schema %}
+  {
+    "name": "remix chat widget",
+    "target": "section",
+    "settings": [
+      {
+        "type": "product",
+        "id": "product",
+        "label": "product",
+        "autofill": true
+      }, {
+        "type": "color",
+        "id": "colour",
+        "label": "Star Colour",
+        "default": "#ff0000"
+      }
+    ]
+  }
+{% endschema %}
