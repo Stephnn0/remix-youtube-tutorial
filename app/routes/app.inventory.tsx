@@ -1,6 +1,6 @@
 import type { LoaderFunction} from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { useActionData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import { authenticate } from "~/shopify.server";
 
 
@@ -36,7 +36,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 const Inventory = () => {
 
-    const data: any = useActionData()
+    const data: any = useLoaderData()
     console.log(data, 'data');
 
   return <div>app.inventory</div>;
