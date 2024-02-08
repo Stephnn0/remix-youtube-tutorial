@@ -95,7 +95,7 @@ export const action: ActionFunction = async ({ request }) => {
         );
 
         if(response.ok){
-            const responseJson = await request.json()
+            const responseJson = await response.json()
             console.log('created discount');
 
             return json({
